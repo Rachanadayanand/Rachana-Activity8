@@ -1,63 +1,52 @@
 //WAP to find the sum of two fractions.
 #include<stdio.h>
-typedef struct fraction
+struct fractions
 {
-   int n;
-   int d; 
-}fract;
-fract input()
+	int num, den;
+};
+typedef struct fractions frac;
+
+frac input(frac a)
 {
-   fract f;
-   printf("Enter numerator: \n");
-   scanf("%d",&f.n);
-   printf("Enter denominator: \n");
-   scanf("%d",&f.d);
-   return f;
+	scanf("%d%d", &a.num, &a.den);
+	return a;
 }
-fract compute(fract f1,fract f2)
-{
-    fract f;
-   int max,lcm;
-   max = (f1.d > f2.d)? f1.d : f2.d;
-   while(1)
-   {
-       if((max % f1.d == 0) && (max % f2.d == 0))
-       {
-           lcm = max;
-           break;
-       }
-          
-       ++max;   
-   }
-   int m1 = lcm/f1.d;
-   int m2 = lcm/f2.d;
-   f.d = lcm; 
-   f.n = (m1*f1.n) + (m2*f2.n); 
-      int min = (f.n < f.d)? f.n : f.d;
-   while(min >= 1)
-   {
-       if(f.n % min == 0 && f.d % min == 0)
-       {
-           f.n = f.n/min;
-           f.d = f.d/min;
-           break;
-       }
-       --min;
-   }
-   return f;
+
+int gcd(int a, int b)
+{ 
+   int gcd = 1;
+   for(int i=2;i<=a && i<=b; ++i)
+   { 
+      if(a%i==0 && b%i==0)
+        { 
+ 	        gcd=i;
+        }
+    }
+    return gcd;
 }
-void print(fract f,fract f1,fract f2)
+
+frac addition(frac a, frac b)
 {
-   printf("%d/%d + %d/%d = %d/%d",f1.n,f1.d,f2.n,f2.d,f.n,f.d);
+	frac c;
+	int n = (b.den*a.num) + (a.den*b.num);
+	int d = (a.den*b.den);
+	int fact = gcd(n, d);
+	c.num = n/fact;
+	c.den = d/fact;
+	return c;
 }
+
+void output(frac a, frac b)
+{
+    printf("The sum of %d/%d and %d/%d is %d/%d \n", a.num, a.den, b.num, b.den, addition(a, b).num, addition(a,b).den);
+}
+
 int main()
 {
-   fract f1,f2;
-   printf("Fraction-1\n");
-   f1 = input();
-   printf("Fraction-2\n");
-   f2 = input();
-   fract f = compute(f1,f2);
-   print(f,f1,f2);
-   return 0;
+	printf("Enter 1st fraction: ");
+	frac a = input(a);
+	printf("Enter 2nd fraction:  ");
+	frac b = input(b);
+	output(a, b);
+	return 0;
 }
